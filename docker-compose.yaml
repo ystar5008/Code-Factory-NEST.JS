@@ -14,7 +14,7 @@ services:
       - '5432:5432'
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_PASSWORD: '1234'
       POSTGRES_DB: postgres
 
   # NestJS 애플리케이션 서비스 정의

@@ -3,8 +3,8 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
+  ParseIntPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -24,7 +24,7 @@ export class PostController {
 
   @Get(':id')
   //데코레이터에 url 파라미터의 이름지정
-  getPost(@Param('id') id: string) {
+  getPost(@Param('id', ParseIntPipe) id: string) {
     return this.postService.getPostById(+id);
   }
 
@@ -34,6 +34,8 @@ export class PostController {
     @Body('title') title: string,
     @Body('content') content: string,
   ) {
+    // create => 저장할 객체를 생성한다.
+    // save => 객체를 저장한다 , create메서드에서 생성한 객체로
     return this.postService.createPost(author, title, content);
   }
 
