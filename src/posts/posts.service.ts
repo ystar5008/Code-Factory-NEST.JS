@@ -115,4 +115,9 @@ export class PostsService {
     }
     return post;
   }
+  savepost2 (){
+    const a : string= '이것은 테스트'
+    const b = ()=>{console.log(a)}
+    console.log(b)
+  }
 }
