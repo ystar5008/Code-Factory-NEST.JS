@@ -1,3 +1,4 @@
+version: '3'
 # 서비스정의
 services:
   postgres:
@@ -11,11 +12,13 @@ services:
     ports:
       #hostport:이미지의포트
       #5432포트 요청 -> 이미지의 포트로 요쳥
-      - '5432:5432'
+      - '5433:5432'
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: '1234'
+      POSTGRES_PASSWORD: '1111'
       POSTGRES_DB: postgres
+    networks:
+      - nestjs_app_network
 
   # NestJS 애플리케이션 서비스 정의
   nest-app:
@@ -28,6 +31,8 @@ services:
       - mongo
     environment:
       MONGO_URI: 'mongodb://mongo:27017/nestjs_app'
+    networks:
+      - nestjs_app_network
 
   #mongoDB 서비스실행
   mongo:
@@ -36,3 +41,8 @@ services:
     #포트번호 로컬:컨테이너 포트번호로 설정
     ports:
       - '27017:27017'
+    networks:
+      - nestjs_app_network
+
+networks:
+  nestjs_app_network:

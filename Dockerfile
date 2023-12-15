@@ -13,7 +13,7 @@ RUN yarn install
 COPY . .
 
 # Creates a "dist" folder with the production build
-RUN npm run build
+RUN yarn build
 
 
 # Start the server using the production build

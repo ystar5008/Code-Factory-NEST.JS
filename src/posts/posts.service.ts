@@ -84,8 +84,17 @@ export class PostsService {
     return newPost;
   }
 
-  updatePost(id: number, author: string, title: string, content: string) {
-    const post = posts.find((post) => post.id === +id);
+  async updatePost(
+    postId: number,
+    author: string,
+    title: string,
+    content: string,
+  ) {
+    const post = await this.postsRepository.findOne({
+      where: {
+        id: postId,
+      },
+    });
 
     if (!post) {
       throw new NotFoundException();
@@ -103,21 +112,24 @@ export class PostsService {
       post.content = content;
     }
 
-    posts = posts.map((prevPost) => (prevPost.id === +id ? post : prevPost));
-    return post;
+    console.log(post);
+    const newPost = await this.postsRepository.save(post);
+
+    return newPost;
   }
 
-  deletePost(postid: number) {
-    const post = posts.filter((post) => post.id === postid);
+  async deletePost(postId: number) {
+    const post = await this.postsRepository.findOne({
+      where: {
+        id: postId,
+      },
+    });
 
     if (!post) {
       throw new NotFoundException();
     }
-    return post;
-  }
-  savepost2 (){
-    const a : string= '이것은 테스트'
-    const b = ()=>{console.log(a)}
-    console.log(b)
+
+    await this.postsRepository.delete(postId);
+    return postId;
   }
 }
