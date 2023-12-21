@@ -17,32 +17,32 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: '1111'
       POSTGRES_DB: postgres
-    networks:
-      - nestjs_app_network
+    # networks:
+    #   - nestjs_app_network
 
   # NestJS 애플리케이션 서비스 정의
-  nest-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - '3000:3000'
-    depends_on:
-      - mongo
-    environment:
-      MONGO_URI: 'mongodb://mongo:27017/nestjs_app'
-    networks:
-      - nestjs_app_network
+#   nest-app:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     ports:
+#       - '3000:3000'
+#     depends_on:
+#       - mongo
+#     environment:
+#       MONGO_URI: 'mongodb://mongo:27017/nestjs_app'
+#     networks:
+#       - nestjs_app_network
 
-  #mongoDB 서비스실행
-  mongo:
-    #이미지 버전 최신으로 설정
-    image: 'mongo:latest'
-    #포트번호 로컬:컨테이너 포트번호로 설정
-    ports:
-      - '27017:27017'
-    networks:
-      - nestjs_app_network
+#   #mongoDB 서비스실행
+#   mongo:
+#     #이미지 버전 최신으로 설정
+#     image: 'mongo:latest'
+#     #포트번호 로컬:컨테이너 포트번호로 설정
+#     ports:
+#       - '27017:27017'
+#     networks:
+#       - nestjs_app_network
 
-networks:
-  nestjs_app_network:
+# networks:
+#   nestjs_app_network:
