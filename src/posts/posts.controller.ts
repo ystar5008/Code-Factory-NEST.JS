@@ -24,29 +24,28 @@ export class PostController {
 
   @Get(':id')
   //데코레이터에 url 파라미터의 이름지정
-  getPost(@Param('id', ParseIntPipe) id: string) {
+  getPost(@Param('id') id: string) {
     return this.postService.getPostById(+id);
   }
 
   @Post()
   postsPosts(
-    @Body('author') author: string,
+    @Body('authorId') authorId: number,
     @Body('title') title: string,
     @Body('content') content: string,
   ) {
     // create => 저장할 객체를 생성한다.
     // save => 객체를 저장한다 , create메서드에서 생성한 객체로
-    return this.postService.createPost(author, title, content);
+    return this.postService.createPost(authorId, title, content);
   }
 
   @Put(':id')
   PutPost(
     @Param('id') id: string,
-    @Body('author') author?: string,
     @Body('title') title?: string,
     @Body('content') content?: string,
   ) {
-    return this.postService.updatePost(+id, author, title, content);
+    return this.postService.updatePost(+id, title, content);
   }
 
   @Delete(':id')
