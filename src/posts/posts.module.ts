@@ -3,9 +3,11 @@ import { PostsService } from './posts.service';
 import { PostController } from './posts.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostsModel } from './entities/posts.entity';
+import { LoggerModule } from 'src/logger/logger.module';
 
 @Module({
   imports: [
+    LoggerModule,
     //forFeature는 모델에 해당되는 레포지토리를 주입할때 사용
     TypeOrmModule.forFeature([
       //불러오려는 모델 정의
