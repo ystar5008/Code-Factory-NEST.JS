@@ -12,6 +12,40 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly usersService: UsersService,
   ) {}
+
+  extractTokenFormHeader(header: string, isBearer: boolean) {
+    //[Basic, {token}]
+    //[Bearer, {token}]
+    const splitToken = header.split(' ');
+
+    const prefix = isBearer ? 'Bearer' : 'Basic';
+
+    if (splitToken.length !== 2 || splitToken[0] !== prefix) {
+      throw new UnauthorizedException('wrong token');
+    }
+
+    const token = splitToken[1];
+
+    return token;
+  }
+
+  decodeBasicToken(base64String: string) {
+    const decoded = Buffer.from(base64String, 'base64').toString('utf8');
+
+    const split = decoded.split(':');
+
+    if (split.length !== 2) {
+      throw new UnauthorizedException('wrong token');
+    }
+
+    const email = split[0];
+    const password = split[1];
+
+    return {
+      email,
+      password,
+    };
+  }
   //기능정리
   //1) registerWithEmail => 이메일 회원가입 함수
   // - email, nickname, password
@@ -96,7 +130,10 @@ export class AuthService {
     //비밀번호 암호화, 비밀번호, 암호화 돌릴 횟수
     const hash = await bcrypt.hash(user.password, HASH_ROURDS);
 
-    const newUser = await this.usersService.createUser(user);
+    const newUser = await this.usersService.createUser({
+      ...user,
+      password: hash,
+    });
 
     return this.loginUser(newUser);
   }
