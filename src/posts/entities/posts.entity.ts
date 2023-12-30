@@ -1,11 +1,17 @@
+import { BaseModel } from 'src/common/entity/base.entity';
 import { UsersModel } from 'src/users/entities/users.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
-export class PostsModel {
+export class PostsModel extends BaseModel {
   //Pk컬럼설정, 고유 값 설정,
-  @PrimaryGeneratedColumn()
-  id: number;
 
   @ManyToOne(() => UsersModel, (user) => user.posts, {
     nullable: false,

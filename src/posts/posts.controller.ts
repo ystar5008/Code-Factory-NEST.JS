@@ -10,6 +10,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
+import { UppercasePipe } from 'src/auth/pipe/uppercase.pipe';
 
 @Controller('posts')
 export class PostController {
@@ -25,32 +26,33 @@ export class PostController {
 
   @Get(':id')
   //데코레이터에 url 파라미터의 이름지정
-  getPost(@Param('id') id: string) {
-    return this.postService.getPostById(+id);
+  getPost(@Param('id', ParseIntPipe) id: number) {
+    return this.postService.getPostById(id);
   }
 
   @Post()
   postsPosts(
     @Body('authorId') authorId: number,
-    @Body('title') title: string,
+    @Body('title', UppercasePipe) title: string,
     @Body('content') content: string,
   ) {
     // create => 저장할 객체를 생성한다.
     // save => 객체를 저장한다 , create메서드에서 생성한 객체로
+    console.log(title);
     return this.postService.createPost(authorId, title, content);
   }
 
   @Put(':id')
   PutPost(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body('title') title?: string,
     @Body('content') content?: string,
   ) {
-    return this.postService.updatePost(+id, title, content);
+    return this.postService.updatePost(id, title, content);
   }
 
   @Delete(':id')
-  deletePost(@Param('id') id: string) {
-    return this.postService.deletePost(+id);
+  deletePost(@Param('id', ParseIntPipe) id: number) {
+    return this.postService.deletePost(id);
   }
 }

@@ -14,6 +14,7 @@ import {
   utilities as nestWinstonModuleUtilities,
   WinstonModule,
 } from 'nest-winston';
+import { CommonModule } from './common/common.module';
 
 @Module({
   //다른 모듈을 등록
@@ -49,6 +50,7 @@ import {
     UsersModule,
     HealthModule,
     AuthModule,
+    CommonModule,
   ],
   controllers: [AppController],
   providers: [AppService],
