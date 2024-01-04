@@ -33,7 +33,7 @@ export class PostController {
   @Post()
   postsPosts(
     @Body('authorId') authorId: number,
-    @Body('title', UppercasePipe) title: string,
+    @Body('title') title: string,
     @Body('content') content: string,
   ) {
     // create => 저장할 객체를 생성한다.
