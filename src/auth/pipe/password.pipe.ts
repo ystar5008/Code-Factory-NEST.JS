@@ -4,7 +4,6 @@ import {
   ArgumentMetadata,
   BadRequestException,
 } from '@nestjs/common';
-import { Pipe } from 'stream';
 
 @Injectable()
 export class PasswordPipe implements PipeTransform {

@@ -8,9 +8,11 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { UppercasePipe } from 'src/auth/pipe/uppercase.pipe';
+import { AccessTokenGuard } from 'src/auth/guard/bearer-token.guard';
 
 @Controller('posts')
 export class PostController {
@@ -31,6 +33,7 @@ export class PostController {
   }
 
   @Post()
+  @UseGuards(AccessTokenGuard)
   postsPosts(
     @Body('authorId') authorId: number,
     @Body('title') title: string,
