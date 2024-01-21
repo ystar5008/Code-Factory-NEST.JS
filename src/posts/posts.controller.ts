@@ -10,12 +10,15 @@ import {
   Put,
   UseGuards,
   Request,
+  Patch,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { UppercasePipe } from 'src/auth/pipe/uppercase.pipe';
 import { AccessTokenGuard } from 'src/auth/guard/bearer-token.guard';
 import { UsersModel } from 'src/users/entities/users.entity';
 import { User } from 'src/users/decorator/user.decorator';
+import { CreatePostDto } from './dto/create-post.dto';
+import { UpdatePostDto } from './dto/update-post.dts';
 
 @Controller('posts')
 export class PostController {
@@ -35,25 +38,21 @@ export class PostController {
     return this.postService.getPostById(id);
   }
 
+  //DTO - Data Transfer Object  - 데이터 전송 객체
   @Post()
   @UseGuards(AccessTokenGuard)
-  postsPosts(
-    @User('id') userId: number,
-    @Body('title') title: string,
-    @Body('content') content: string,
-  ) {
+  postsPosts(@User('id') userId: number, @Body() body: CreatePostDto) {
     // create => 저장할 객체를 생성한다.
     // save => 객체를 저장한다 , create메서드에서 생성한 객체로
-    return this.postService.createPost(userId, title, content);
+    return this.postService.createPost(userId, body);
   }
 
-  @Put(':id')
-  PutPost(
+  @Patch(':id')
+  PatchPost(
     @Param('id', ParseIntPipe) id: number,
-    @Body('title') title?: string,
-    @Body('content') content?: string,
+    @Body() body: UpdatePostDto,
   ) {
-    return this.postService.updatePost(id, title, content);
+    return this.postService.updatePost(id, body);
   }
 
   @Delete(':id')

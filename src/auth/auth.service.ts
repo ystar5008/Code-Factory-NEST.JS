@@ -4,6 +4,7 @@ import { UsersModel } from 'src/users/entities/users.entity';
 import { HASH_ROURDS, JWT_SECRET } from './const/auth.const';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
+import { RegisterUserDto } from './dto/register-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -145,9 +146,7 @@ export class AuthService {
 
     return this.loginUser(exitingUser);
   }
-  async registerWithEmail(
-    user: Pick<UsersModel, 'nickname' | 'email' | 'password'>,
-  ) {
+  async registerWithEmail(user: RegisterUserDto) {
     //비밀번호 암호화, 비밀번호, 암호화 돌릴 횟수
     const hash = await bcrypt.hash(user.password, HASH_ROURDS);
 
