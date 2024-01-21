@@ -14,10 +14,7 @@ export class AuthService {
   ) {}
 
   extractTokenFormHeader(header: string, isBearer: boolean) {
-    //[Basic, {token}]
-    //[Bearer, {token}]
     const splitToken = header.split(' ');
-
     const prefix = isBearer ? 'Bearer' : 'Basic';
 
     if (splitToken.length !== 2 || splitToken[0] !== prefix) {
@@ -48,9 +45,13 @@ export class AuthService {
   }
 
   verifyToken(token: string) {
-    return this.jwtService.verify(token, {
-      secret: JWT_SECRET,
-    });
+    try {
+      return this.jwtService.verify(token, {
+        secret: JWT_SECRET,
+      });
+    } catch (e) {
+      throw new UnauthorizedException('토큰이 만료됐거나 잘못된 토큰입니다.');
+    }
   }
 
   rotateToken(token: string, isRefreshToken: boolean) {
@@ -96,12 +97,12 @@ export class AuthService {
   //payload에 들어갈 정보
   //email
   //sub -> id
-  //type : "acess" | "refresh"
+  //type : "access" | "refresh"
   signToken(user: Pick<UsersModel, 'email' | 'id'>, isRefreshToken: boolean) {
     const payload = {
       email: user.email,
       sub: user.id,
-      type: isRefreshToken ? 'refresh' : 'acess',
+      type: isRefreshToken ? 'refresh' : 'access',
     };
 
     //pay로드 암호화
@@ -109,7 +110,7 @@ export class AuthService {
       //시크릿키
       secret: JWT_SECRET,
       //토큰 만료시간, 초단위 ? 1시간 : 5분
-      expiresIn: isRefreshToken ? 3600 : 300,
+      expiresIn: isRefreshToken ? 36000 : 3600,
     });
   }
 
@@ -124,16 +125,11 @@ export class AuthService {
   async authenticateWithEmailAndPassword(
     user: Pick<UsersModel, 'email' | 'password'>,
   ) {
-    //사용자검증
-    //비밀번호검증
-    //사용자 정보 반환
-
     const exixtingUser = await this.usersService.getUserByEmail(user.email);
-
+    console.log(exixtingUser);
     if (!exixtingUser) {
       throw new UnauthorizedException('not registed user');
     }
-
     //입력된 비밀번호, 해시로 저장된 비밀번호를 비교함
     const passOK = await bcrypt.compare(user.password, exixtingUser.password);
 

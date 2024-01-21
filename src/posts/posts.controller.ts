@@ -14,6 +14,8 @@ import {
 import { PostsService } from './posts.service';
 import { UppercasePipe } from 'src/auth/pipe/uppercase.pipe';
 import { AccessTokenGuard } from 'src/auth/guard/bearer-token.guard';
+import { UsersModel } from 'src/users/entities/users.entity';
+import { User } from 'src/users/decorator/user.decorator';
 
 @Controller('posts')
 export class PostController {
@@ -36,14 +38,13 @@ export class PostController {
   @Post()
   @UseGuards(AccessTokenGuard)
   postsPosts(
-    @Request() req: any,
+    @User('id') userId: number,
     @Body('title') title: string,
     @Body('content') content: string,
   ) {
     // create => 저장할 객체를 생성한다.
     // save => 객체를 저장한다 , create메서드에서 생성한 객체로
-    const authorId = req.user.id;
-    return this.postService.createPost(authorId, title, content);
+    return this.postService.createPost(userId, title, content);
   }
 
   @Put(':id')

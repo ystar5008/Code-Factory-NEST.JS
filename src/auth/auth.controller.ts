@@ -43,7 +43,6 @@ export class AuthController {
   @UseGuards(BasicTokenGuard)
   postloginEmail(@Headers('authorization') rawToken: string) {
     const token = this.authService.extractTokenFormHeader(rawToken, false);
-
     const credentials = this.authService.decodeBasicToken(token);
 
     return this.authService.loginWithEmail(credentials);
